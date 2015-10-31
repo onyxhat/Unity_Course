@@ -2,17 +2,32 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class TextController : MonoBehaviour {
+public class TextController : MonoBehaviour
+{
 
 	public Text text;
 	public Text prompt;
-	private enum States {hotel_room, desk, bed, bathroom, door, toilet, lobby, restaurant, exit, dead};
+	private enum States
+	{
+		hotel_room,
+		desk,
+		bed,
+		bathroom,
+		door,
+		toilet,
+		lobby,
+		restaurant,
+		highway,
+		dead
+	}
+
 	private States myState;
 	private bool hasKey;
 	private string item;
 	
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		myState = States.hotel_room;
 		hasKey = false;
 		item = null;
@@ -20,20 +35,33 @@ public class TextController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if 		(myState == States.bathroom)	{state_bathroom();}
-		else if (myState == States.bed)			{state_bed();}
-		else if (myState == States.hotel_room)	{state_hotel_room();}
-		else if (myState == States.desk)		{state_desk();}
-		else if (myState == States.door)		{state_door();}
-		else if (myState == States.toilet)		{state_toilet();}
-		else if (myState == States.lobby)		{state_lobby();}
-		else if (myState == States.restaurant)	{state_restaurant();}
-		else if (myState == States.exit)		{state_exit();}
-		else if (myState == States.dead)		{state_dead();};
+	void Update ()
+	{
+		if (myState == States.bathroom) {
+			bathroom ();
+		} else if (myState == States.dead) {
+			dead ();
+		} else if (myState == States.bed) {
+			bed ();
+		} else if (myState == States.hotel_room) {
+			hotel_room ();
+		} else if (myState == States.desk) {
+			desk ();
+		} else if (myState == States.door) {
+			door ();
+		} else if (myState == States.toilet) {
+			toilet ();
+		} else if (myState == States.lobby) {
+			lobby ();
+		} else if (myState == States.restaurant) {
+			restaurant ();
+		} else if (myState == States.highway) {
+			highway ();
+		}
 	}
 	
-	void state_hotel_room () {
+	void hotel_room ()
+	{
 		text.text = @"
 			You awake in a hotel room in India. Your stomach aches with both
 			the need to eat - and void whatever is or once was in it. Looking
@@ -42,23 +70,32 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(B)ed / Des(K) / (D)oor / B(A)throom]";
 		
-		if 		(Input.GetKeyDown(KeyCode.B)) {myState = States.bed;}
-		else if (Input.GetKeyDown(KeyCode.D)) {myState = States.door;}
-		else if (Input.GetKeyDown(KeyCode.A)) {myState = States.bathroom;}
-		else if (Input.GetKeyDown(KeyCode.K)) {myState = States.desk;};
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bed;
+		} else if (Input.GetKeyDown (KeyCode.D)) {
+			myState = States.door;
+		} else if (Input.GetKeyDown (KeyCode.A)) {
+			myState = States.bathroom;
+		} else if (Input.GetKeyDown (KeyCode.K)) {
+			myState = States.desk;
+		}
 	}
 	
-	void state_bed () {
+	void bed ()
+	{
 		text.text = @"
 			The bed is strewn with water bottles, sick, room service menus and feces.
 			There doesn't seem to be anything of use here.";
 			
 		prompt.text = "[(R)eturn]";
 		
-		if (Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;};
+		if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.hotel_room;
+		}
 	}
 	
-	void state_bathroom () {
+	void bathroom ()
+	{
 		text.text = @"
 			You enter the bathroom with a strange sense of deja` vu; you've
 			done this many times before. You see a toilet and a hose, but
@@ -66,11 +103,15 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(T)oilet / (R)eturn]";
 		
-		if 		(Input.GetKeyDown(KeyCode.T)) {myState = States.toilet;}
-		else if (Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;};
+		if (Input.GetKeyDown (KeyCode.T)) {
+			myState = States.toilet;
+		} else if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.hotel_room;
+		}
 	}
 	
-	void state_toilet () {
+	void toilet ()
+	{
 		text.text = @"
 			'ARRRRRRGHHHHHHHHHHHHHHHHH!!!!'
 			
@@ -78,11 +119,15 @@ public class TextController : MonoBehaviour {
 		
 		prompt.text = "[(B)athroom / (R)eturn]";
 		
-		if 		(Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;}
-		else if (Input.GetKeyDown(KeyCode.B)) {myState = States.bathroom;};
+		if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.hotel_room;
+		} else if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bathroom;
+		}
 	}
 	
-	void state_door () {
+	void door ()
+	{
 		if (hasKey) {
 			text.text = @"
 				You use the keycard to unlock the door. You hear a click
@@ -90,8 +135,11 @@ public class TextController : MonoBehaviour {
 				
 			prompt.text = "[(E)xit / (R)eturn]";
 				
-			if 		(Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;}
-			else if (Input.GetKeyDown (KeyCode.E)) {myState = States.lobby;};
+			if (Input.GetKeyDown (KeyCode.R)) {
+				myState = States.hotel_room;
+			} else if (Input.GetKeyDown (KeyCode.E)) {
+				myState = States.lobby;
+			}
 		} else {
 			text.text = @"
 				You check the door, but it's locked. It doesn't look
@@ -99,11 +147,15 @@ public class TextController : MonoBehaviour {
 				
 			prompt.text = "[(R)eturn]";
 				
-			if (Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;};
-		};
+			if (Input.GetKeyDown (KeyCode.R)) {
+				myState = States.hotel_room;
+			}
+		}
+		;
 	}
 	
-	void state_desk () {
+	void desk ()
+	{
 		if (hasKey) {
 			text.text = @"
 				Looking over the desk - you find bottles of water.";
@@ -115,24 +167,34 @@ public class TextController : MonoBehaviour {
 				(B)ottles of water. (R)eturn to the hotel room?";
 				
 			prompt.text = "[(W)ater / (K)eycard / (R)eturn]";
-		};
+		}
+		;
 		
-		if 		(Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;}
-		else if (Input.GetKeyDown(KeyCode.W)) {item = "water"; myState = States.dead;}
-		else if (Input.GetKeyDown (KeyCode.K)) {hasKey = true;};
+		if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.hotel_room;
+		} else if (Input.GetKeyDown (KeyCode.W)) {
+			item = "water";
+			myState = States.dead;
+		} else if (Input.GetKeyDown (KeyCode.K)) {
+			hasKey = true;
+		}
 	}
 	
-	void state_dead () {
-		text.text = string.Format(@"
+	void dead ()
+	{
+		text.text = string.Format (@"
 			The {0} was contaminated; you've died of dysentary.", item);
 			
 		prompt.color = UnityEngine.Color.red;
 		prompt.text = "[(T)ry again?]";
 		
-		if (Input.GetKeyDown(KeyCode.T)) {Start();};
+		if (Input.GetKeyDown (KeyCode.T)) {
+			Start ();
+		}
 	}
 	
-	void state_lobby () {
+	void lobby ()
+	{
 		text.text = @"
 			The door opens to a long corridor. In the distance you hear the
 			clinking of dishes and silverware. You wander out to the lobby
@@ -140,11 +202,15 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(R)estaurant / (E)xit]";
 		
-		if 		(Input.GetKeyDown (KeyCode.R)) {myState = States.restaurant;}
-		else if (Input.GetKeyDown (KeyCode.E)) {myState = States.exit;};
+		if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.restaurant;
+		} else if (Input.GetKeyDown (KeyCode.E)) {
+			myState = States.highway;
+		}
 	}
 	
-	void state_restaurant () {
+	void restaurant ()
+	{
 		text.text = @"
 			You enter the restaurant and are met by beautiful sights and
 			smells of a delicious looking buffet. The staff are eager to
@@ -152,13 +218,22 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(E)at / (D)rink / (B)e Merry / (R)eturn]";
 			
-		if 		(Input.GetKeyDown (KeyCode.R)) {myState = States.lobby;}
-		else if (Input.GetKeyDown (KeyCode.E)) {item = "food"; myState = States.dead;}
-		else if (Input.GetKeyDown (KeyCode.D)) {item = "drink"; myState = States.dead;}
-		else if (Input.GetKeyDown (KeyCode.B)) {item = "merriment"; myState = States.dead;};		
+		if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.lobby;
+		} else if (Input.GetKeyDown (KeyCode.E)) {
+			item = "food";
+			myState = States.dead;
+		} else if (Input.GetKeyDown (KeyCode.D)) {
+			item = "drink";
+			myState = States.dead;
+		} else if (Input.GetKeyDown (KeyCode.B)) {
+			item = "merriment";
+			myState = States.dead;
+		}
 	}
 	
-	void state_exit () {
+	void highway ()
+	{
 		text.text = @"
 			You walk outside to warm beautiful weather. You decide to take a stroll to get some
 			fresh air. No sooner do you set foot on the road than you get hit by a rickshaw
