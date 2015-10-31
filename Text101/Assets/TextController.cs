@@ -16,42 +16,21 @@ public class TextController : MonoBehaviour {
 		myState = States.hotel_room;
 		hasKey = false;
 		item = null;
+		prompt.color = UnityEngine.Color.green;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		switch (myState) {
-			case States.bathroom:
-				state_bathroom();
-				break;
-			case States.bed:
-				state_bed();
-				break;
-			case States.desk:
-				state_desk();
-				break;
-			case States.door:
-				state_door();
-				break;
-			case States.exit:
-				state_exit();
-				break;
-			case States.lobby:
-				state_lobby();
-				break;
-			case States.hotel_room:
-				state_hotel_room();
-				break;
-			case States.restaurant:
-				state_restaurant();
-				break;
-			case States.toilet:
-				state_toilet();
-				break;
-			case States.dead:
-				state_dead();
-				break;
-		};
+		if 		(myState == States.bathroom)	{state_bathroom();}
+		else if (myState == States.bed)			{state_bed();}
+		else if (myState == States.hotel_room)	{state_hotel_room();}
+		else if (myState == States.desk)		{state_desk();}
+		else if (myState == States.door)		{state_door();}
+		else if (myState == States.toilet)		{state_toilet();}
+		else if (myState == States.lobby)		{state_lobby();}
+		else if (myState == States.restaurant)	{state_restaurant();}
+		else if (myState == States.exit)		{state_exit();}
+		else if (myState == States.dead)		{state_dead();};
 	}
 	
 	void state_hotel_room () {
@@ -63,15 +42,10 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(B)ed / Des(K) / (D)oor / B(A)throom]";
 		
-		if (Input.GetKeyDown(KeyCode.B)) {
-			myState = States.bed;
-		} else if (Input.GetKeyDown(KeyCode.D)) {
-			myState = States.door;
-		} else if (Input.GetKeyDown(KeyCode.A)) {
-			myState = States.bathroom;
-		} else if (Input.GetKeyDown(KeyCode.K)) {
-			myState = States.desk;
-		};
+		if 		(Input.GetKeyDown(KeyCode.B)) {myState = States.bed;}
+		else if (Input.GetKeyDown(KeyCode.D)) {myState = States.door;}
+		else if (Input.GetKeyDown(KeyCode.A)) {myState = States.bathroom;}
+		else if (Input.GetKeyDown(KeyCode.K)) {myState = States.desk;};
 	}
 	
 	void state_bed () {
@@ -81,9 +55,7 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(R)eturn]";
 		
-		if (Input.GetKeyDown(KeyCode.R)) {
-			myState = States.hotel_room;
-		};
+		if (Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;};
 	}
 	
 	void state_bathroom () {
@@ -94,11 +66,8 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(T)oilet / (R)eturn]";
 		
-		if (Input.GetKeyDown(KeyCode.T)) {
-			myState = States.toilet;
-		} else if (Input.GetKeyDown(KeyCode.R)) {
-			myState = States.hotel_room;
-		};
+		if 		(Input.GetKeyDown(KeyCode.T)) {myState = States.toilet;}
+		else if (Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;};
 	}
 	
 	void state_toilet () {
@@ -109,11 +78,8 @@ public class TextController : MonoBehaviour {
 		
 		prompt.text = "[(B)athroom / (R)eturn]";
 		
-		if (Input.GetKeyDown(KeyCode.R)) {
-			myState = States.hotel_room;
-		} else if (Input.GetKeyDown(KeyCode.B)) {
-			myState = States.bathroom;
-		};
+		if 		(Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;}
+		else if (Input.GetKeyDown(KeyCode.B)) {myState = States.bathroom;};
 	}
 	
 	void state_door () {
@@ -124,11 +90,8 @@ public class TextController : MonoBehaviour {
 				
 			prompt.text = "[(E)xit / (R)eturn]";
 				
-			if (Input.GetKeyDown(KeyCode.R)) {
-				myState = States.hotel_room;
-			} else if (Input.GetKeyDown (KeyCode.E)) {
-				myState = States.lobby;
-			};
+			if 		(Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;}
+			else if (Input.GetKeyDown (KeyCode.E)) {myState = States.lobby;};
 		} else {
 			text.text = @"
 				You check the door, but it's locked. It doesn't look
@@ -136,9 +99,7 @@ public class TextController : MonoBehaviour {
 				
 			prompt.text = "[(R)eturn]";
 				
-			if (Input.GetKeyDown(KeyCode.R)) {
-				myState = States.hotel_room;
-			};
+			if (Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;};
 		};
 	}
 	
@@ -156,25 +117,19 @@ public class TextController : MonoBehaviour {
 			prompt.text = "[(W)ater / (K)eycard / (R)eturn]";
 		};
 		
-		if (Input.GetKeyDown(KeyCode.R)) {
-			myState = States.hotel_room;
-		} else if (Input.GetKeyDown(KeyCode.W)) {
-			item = "water";
-			myState = States.dead;
-		} else if (Input.GetKeyDown (KeyCode.K)) {
-			hasKey = true;
-		};
+		if 		(Input.GetKeyDown(KeyCode.R)) {myState = States.hotel_room;}
+		else if (Input.GetKeyDown(KeyCode.W)) {item = "water"; myState = States.dead;}
+		else if (Input.GetKeyDown (KeyCode.K)) {hasKey = true;};
 	}
 	
 	void state_dead () {
 		text.text = string.Format(@"
 			The {0} was contaminated; you've died of dysentary.", item);
 			
+		prompt.color = UnityEngine.Color.red;
 		prompt.text = "[(T)ry again?]";
 		
-		if (Input.GetKeyDown(KeyCode.T)) {
-			Start();
-		};
+		if (Input.GetKeyDown(KeyCode.T)) {Start();};
 	}
 	
 	void state_lobby () {
@@ -185,11 +140,8 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(R)estaurant / (E)xit]";
 		
-		if (Input.GetKeyDown (KeyCode.R)) {
-			myState = States.restaurant;
-		} else if (Input.GetKeyDown (KeyCode.E)) {
-			myState = States.exit;
-		};
+		if 		(Input.GetKeyDown (KeyCode.R)) {myState = States.restaurant;}
+		else if (Input.GetKeyDown (KeyCode.E)) {myState = States.exit;};
 	}
 	
 	void state_restaurant () {
@@ -200,18 +152,10 @@ public class TextController : MonoBehaviour {
 			
 		prompt.text = "[(E)at / (D)rink / (B)e Merry / (R)eturn]";
 			
-		if (Input.GetKeyDown (KeyCode.R)) {
-			myState = States.lobby;
-		} else if (Input.GetKeyDown (KeyCode.E)) {
-			item = "food";
-			myState = States.dead;
-		} else if (Input.GetKeyDown (KeyCode.D)) {
-			item = "drink";
-			myState = States.dead;
-		} else if (Input.GetKeyDown (KeyCode.B)) {
-			item = "merriment";
-			myState = States.dead;
-		};		
+		if 		(Input.GetKeyDown (KeyCode.R)) {myState = States.lobby;}
+		else if (Input.GetKeyDown (KeyCode.E)) {item = "food"; myState = States.dead;}
+		else if (Input.GetKeyDown (KeyCode.D)) {item = "drink"; myState = States.dead;}
+		else if (Input.GetKeyDown (KeyCode.B)) {item = "merriment"; myState = States.dead;};		
 	}
 	
 	void state_exit () {
