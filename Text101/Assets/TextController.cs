@@ -206,9 +206,6 @@ public class TextController : MonoBehaviour {
 			(you really should have looked).
 			
 			Fortunately help is nearby - and the rickshaw driver offers to take you to the
-			hospital (for a very reasonable rate - wont even turn on the meter - you get
-			to guess how much it should cost).
-			
-			You survive your crash injuries, but ultimately succumb to dysentary...";
+			hospital. You survive your crash injuries, but ultimately succumb to dysentary...";
 	}
 }
