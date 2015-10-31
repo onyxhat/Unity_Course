@@ -5,6 +5,7 @@ using System.Collections;
 public class TextController : MonoBehaviour {
 
 	public Text text;
+	public Text prompt;
 	private enum States {hotel_room, desk, bed, bathroom, door, toilet, lobby, restaurant, exit, dead};
 	private States myState;
 	private bool hasKey;
@@ -57,8 +58,10 @@ public class TextController : MonoBehaviour {
 		text.text = @"
 			You awake in a hotel room in India. Your stomach aches with both
 			the need to eat - and void whatever is or once was in it. Looking
-			around you see a (B)ed with dirty sheets, a des(K), a (D)oor and
-			a b(A)throom.";
+			around you see a bed with dirty sheets, a desk, a door and
+			a bathroom.";
+			
+		prompt.text = "[(B)ed / Des(K) / (D)oor / B(A)throom]";
 		
 		if (Input.GetKeyDown(KeyCode.B)) {
 			myState = States.bed;
@@ -74,7 +77,9 @@ public class TextController : MonoBehaviour {
 	void state_bed () {
 		text.text = @"
 			The bed is strewn with water bottles, sick, room service menus and feces.
-			There doesn't seem to be anything of use here. (R)eturn?";
+			There doesn't seem to be anything of use here.";
+			
+		prompt.text = "[(R)eturn]";
 		
 		if (Input.GetKeyDown(KeyCode.R)) {
 			myState = States.hotel_room;
@@ -84,9 +89,10 @@ public class TextController : MonoBehaviour {
 	void state_bathroom () {
 		text.text = @"
 			You enter the bathroom with a strange sense of deja` vu; you've
-			done this many times before. You see a (T)oilet and a hose, but
-			inexplicably no toilet paper. Bad things have happened here.
-			(R)eturn?";
+			done this many times before. You see a toilet and a hose, but
+			inexplicably no toilet paper. Bad things have happened here.";
+			
+		prompt.text = "[(T)oilet / (R)eturn]";
 		
 		if (Input.GetKeyDown(KeyCode.T)) {
 			myState = States.toilet;
@@ -97,13 +103,13 @@ public class TextController : MonoBehaviour {
 	
 	void state_toilet () {
 		text.text = @"
-		'ARRRRRRGHHHHHHHHHHHHHHHHH!!!!'
+			'ARRRRRRGHHHHHHHHHHHHHHHHH!!!!'
+			
+			You feel better...";
 		
-		You feel better...
+		prompt.text = "[(B)athroom / (R)eturn]";
 		
-		(G)o back to the hotel room? Search the (B)athroom more?";
-		
-		if (Input.GetKeyDown(KeyCode.G)) {
+		if (Input.GetKeyDown(KeyCode.R)) {
 			myState = States.hotel_room;
 		} else if (Input.GetKeyDown(KeyCode.B)) {
 			myState = States.bathroom;
@@ -113,18 +119,22 @@ public class TextController : MonoBehaviour {
 	void state_door () {
 		if (hasKey) {
 			text.text = @"
-				You use the keycard to unlock the door. (G)o out
-				into the hallway? (R)eturn to the hotel room?";
+				You use the keycard to unlock the door. You hear a click
+				and the handle now turns freely.";
+				
+			prompt.text = "[(E)xit / (R)eturn]";
 				
 			if (Input.GetKeyDown(KeyCode.R)) {
 				myState = States.hotel_room;
-			} else if (Input.GetKeyDown (KeyCode.G)) {
+			} else if (Input.GetKeyDown (KeyCode.E)) {
 				myState = States.lobby;
 			};
 		} else {
 			text.text = @"
 				You check the door, but it's locked. It doesn't look
 				like you can do anything but (R)eturn to the hotel room.";
+				
+			prompt.text = "[(R)eturn]";
 				
 			if (Input.GetKeyDown(KeyCode.R)) {
 				myState = States.hotel_room;
@@ -135,17 +145,20 @@ public class TextController : MonoBehaviour {
 	void state_desk () {
 		if (hasKey) {
 			text.text = @"
-				Looking over the desk - you find (B)ottles of water.
-				(R)eturn to the hotel room?";
+				Looking over the desk - you find bottles of water.";
+				
+			prompt.text = "[(W)ater / (R)eturn]";
 		} else {
 			text.text = @"
 				Looking over the desk - you find a plastic (K)eycard and
 				(B)ottles of water. (R)eturn to the hotel room?";
+				
+			prompt.text = "[(W)ater / (K)eycard / (R)eturn]";
 		};
 		
 		if (Input.GetKeyDown(KeyCode.R)) {
 			myState = States.hotel_room;
-		} else if (Input.GetKeyDown(KeyCode.B)) {
+		} else if (Input.GetKeyDown(KeyCode.W)) {
 			item = "water";
 			myState = States.dead;
 		} else if (Input.GetKeyDown (KeyCode.K)) {
@@ -155,9 +168,9 @@ public class TextController : MonoBehaviour {
 	
 	void state_dead () {
 		text.text = string.Format(@"
-			The {0} was contaminated; you've died of dysentary.
+			The {0} was contaminated; you've died of dysentary.", item);
 			
-			(T)ry again?", item);
+		prompt.text = "[(T)ry again?]";
 		
 		if (Input.GetKeyDown(KeyCode.T)) {
 			Start();
@@ -168,7 +181,9 @@ public class TextController : MonoBehaviour {
 		text.text = @"
 			The door opens to a long corridor. In the distance you hear the
 			clinking of dishes and silverware. You wander out to the lobby
-			and notice a (R)estaurant and an (E)xit.";
+			and notice a restaurant and an exit.";
+			
+		prompt.text = "[(R)estaurant / (E)xit]";
 		
 		if (Input.GetKeyDown (KeyCode.R)) {
 			myState = States.restaurant;
@@ -181,9 +196,9 @@ public class TextController : MonoBehaviour {
 		text.text = @"
 			You enter the restaurant and are met by beautiful sights and
 			smells of a delicious looking buffet. The staff are eager to
-			help you find a seat and fetch whatever you might want.
+			help you find a seat and fetch whatever you might want.";
 			
-			[(E)at / (D)rink / (B)e Merry / (R)eturn to Lobby]";
+		prompt.text = "[(E)at / (D)rink / (B)e Merry / (R)eturn]";
 			
 		if (Input.GetKeyDown (KeyCode.R)) {
 			myState = States.lobby;
@@ -207,5 +222,8 @@ public class TextController : MonoBehaviour {
 			
 			Fortunately help is nearby - and the rickshaw driver offers to take you to the
 			hospital. You survive your crash injuries, but ultimately succumb to dysentary...";
+			
+		prompt.color = UnityEngine.Color.red;
+		prompt.text = "[Game Over]";
 	}
 }
